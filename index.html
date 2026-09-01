@@ -58,6 +58,52 @@
   .pager .ellipsis { color:var(--muted); padding:0 4px; }
   .footer { text-align:center; color:var(--muted); font-size:12px; padding:24px; border-top:1px solid #e5e0d5; }
   .footer .phone { color:var(--gold); font-weight:600; }
+  /* ===== 购物车 ===== */
+  .add-btn { width:100%; padding:8px; border:1px solid var(--gold); background:#fff; color:var(--gold); border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; margin-top:10px; }
+  .add-btn:hover, .add-btn.in { background:var(--gold); color:#fff; }
+  .cart-fab { position:fixed; right:20px; bottom:24px; z-index:60; width:58px; height:58px; border-radius:50%; background:var(--gold); color:#fff; border:none; box-shadow:0 4px 16px rgba(0,0,0,.28); cursor:pointer; font-size:26px; display:flex; align-items:center; justify-content:center; }
+  .cart-fab .cnt { position:absolute; top:-4px; right:-4px; min-width:22px; height:22px; background:#c0392b; color:#fff; border-radius:11px; font-size:12px; font-weight:700; display:none; align-items:center; justify-content:center; padding:0 5px; }
+  .cart-panel { position:fixed; top:0; right:0; bottom:0; width:360px; max-width:92vw; z-index:70; background:#fff; box-shadow:-4px 0 20px rgba(0,0,0,.22); transform:translateX(105%); transition:transform .25s; display:flex; flex-direction:column; }
+  .cart-panel.open { transform:translateX(0); }
+  .cart-head { padding:16px 18px; background:linear-gradient(135deg,#2b2118,#4a3623); color:#fff; display:flex; justify-content:space-between; align-items:center; }
+  .cart-head .t { font-size:17px; font-weight:700; letter-spacing:1px; }
+  .cart-head .x { background:none; border:none; color:#fff; font-size:22px; cursor:pointer; line-height:1; }
+  .cart-body { flex:1; overflow-y:auto; padding:12px 16px; }
+  .cart-item { display:flex; gap:10px; padding:10px 0; border-bottom:1px solid #eee; align-items:center; }
+  .cart-item img { width:52px; height:52px; border-radius:8px; object-fit:cover; flex-shrink:0; }
+  .cart-item .ci-mid { flex:1; min-width:0; }
+  .cart-item .ci-name { font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .cart-item .ci-price { font-size:12px; color:var(--muted); margin:3px 0; }
+  .qty { display:inline-flex; align-items:center; border:1px solid #ddd; border-radius:6px; overflow:hidden; }
+  .qty button { width:26px; height:26px; border:none; background:#f5f5f5; cursor:pointer; font-size:15px; line-height:1; }
+  .qty span { width:30px; text-align:center; font-size:13px; }
+  .cart-item .ci-sub { font-size:14px; font-weight:700; color:#c0392b; margin-left:6px; }
+  .ci-del { background:none; border:none; color:#ccc; cursor:pointer; font-size:18px; line-height:1; }
+  .ci-del:hover { color:#c0392b; }
+  .cart-empty { text-align:center; color:var(--muted); padding:48px 0; font-size:14px; }
+  .cart-foot { padding:14px 18px; border-top:1px solid #eee; }
+  .cart-total { display:flex; justify-content:space-between; align-items:baseline; font-size:15px; font-weight:600; margin-bottom:12px; }
+  .cart-total .sum { color:#c0392b; font-size:22px; font-weight:700; }
+  .cart-foot .btn { width:100%; justify-content:center; padding:12px; font-size:15px; }
+  .cart-foot .btn.ghost { background:#fff; border:1px solid #ddd; color:var(--ink); margin-bottom:8px; }
+  .cart-foot .btn.ghost:hover { border-color:var(--gold); color:var(--gold); }
+  /* ===== 账单弹窗 ===== */
+  .invoice-modal { position:fixed; inset:0; z-index:80; background:rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; padding:20px; }
+  .invoice-modal.open { display:flex; }
+  .invoice-box { background:#fff; border-radius:12px; max-width:560px; width:100%; max-height:92vh; overflow-y:auto; padding:26px; }
+  .invoice-box h2 { font-size:19px; letter-spacing:.5px; margin-bottom:4px; }
+  .iv-date { color:var(--muted); font-size:12px; margin-bottom:16px; }
+  .iv-cust { display:flex; flex-direction:column; gap:8px; margin-bottom:16px; }
+  .iv-cust input { padding:9px 12px; border:1px solid #ddd; border-radius:8px; font-size:13px; }
+  .iv-cust input:focus { outline:none; border-color:var(--gold); }
+  .iv-table { width:100%; border-collapse:collapse; margin-bottom:16px; font-size:13px; }
+  .iv-table th, .iv-table td { border-bottom:1px solid #eee; padding:8px 6px; text-align:left; }
+  .iv-table th { color:var(--muted); font-weight:600; font-size:12px; }
+  .iv-table .num { text-align:right; }
+  .iv-total { text-align:right; font-size:16px; font-weight:600; margin-bottom:18px; }
+  .iv-total .sum { color:#c0392b; font-size:24px; font-weight:700; }
+  .iv-actions { display:flex; gap:10px; }
+  .iv-actions .btn { flex:1; justify-content:center; padding:12px; }
   .lightbox { position:fixed; inset:0; z-index:100; background:rgba(0,0,0,.88); display:none; align-items:center; justify-content:center; }
   .lightbox.open { display:flex; }
   .lightbox .lb-inner { position:relative; max-width:90vw; max-height:90vh; text-align:center; }
@@ -82,16 +128,22 @@
     .lightbox .lb-next { right:6px; }
   }
   @media print {
-    .toolbar, .statbar, .pager, .footer, .lightbox { display:none !important; }
     body { background:#fff; }
+    .toolbar, .statbar, .pager, .footer, .lightbox, .cart-fab, .cart-panel { display:none !important; }
+    .invoice-modal { display:none !important; }
     .grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:8px; padding:0; max-width:none; margin:0; }
     .card { box-shadow:none; border:1px solid #ccc; border-radius:4px; break-inside:avoid; page-break-inside:avoid; }
     .card:hover { transform:none; box-shadow:none; }
     .card .info { padding:6px 8px; }
     .card .name { font-size:11px; }
     .card .price { font-size:12px; }
+    .card .add-btn { display:none !important; }
     .thumb img.second { opacity:0 !important; }
     .thumb img.first { opacity:1 !important; }
+    body.printing-invoice .grid { display:none !important; }
+    body.printing-invoice .invoice-modal { display:flex !important; position:static; background:#fff; padding:0; align-items:flex-start; }
+    body.printing-invoice .invoice-box { max-height:none; max-width:none; box-shadow:none; border:none; padding:0; }
+    body.printing-invoice .iv-actions { display:none !important; }
   }
 </style>
 </head>
@@ -140,6 +192,42 @@
       <div class="lb-name" id="lbName"></div>
       <div class="lb-price" id="lbPrice"></div>
       <div class="lb-count" id="lbCount"></div>
+    </div>
+  </div>
+  <!-- 购物车球 -->
+  <button class="cart-fab" id="cartFab" onclick="toggleCart()">🛒<span class="cnt" id="cartCnt">0</span></button>
+  <!-- 购物车面板 -->
+  <div class="cart-panel" id="cartPanel">
+    <div class="cart-head">
+      <span class="t">🛒 Cart</span>
+      <button class="x" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-body" id="cartBody"></div>
+    <div class="cart-foot">
+      <div class="cart-total"><span>Total</span><span class="sum" id="cartTotal">¥0.00</span></div>
+      <button class="btn ghost" onclick="clearCart()">Clear cart</button>
+      <button class="btn" onclick="openInvoice()">📄 Generate Invoice</button>
+    </div>
+  </div>
+  <!-- 账单弹窗 -->
+  <div class="invoice-modal" id="invoiceModal">
+    <div class="invoice-box">
+      <h2>Crystal Factory Price List - Invoice</h2>
+      <div class="iv-date" id="ivDate"></div>
+      <div class="iv-cust">
+        <input id="ivName" placeholder="Your name">
+        <input id="ivPhone" placeholder="Phone / WhatsApp">
+        <input id="ivWechat" placeholder="WeChat">
+      </div>
+      <table class="iv-table">
+        <thead><tr><th>Product</th><th>Unit</th><th class="num">Qty</th><th class="num">Subtotal</th></tr></thead>
+        <tbody id="ivBody"></tbody>
+      </table>
+      <div class="iv-total">Total: <span class="sum" id="ivTotal">¥0.00</span></div>
+      <div class="iv-actions">
+        <button class="btn" onclick="printInvoice()">🖨 Print / PDF</button>
+        <button class="btn" onclick="copyInvoice()">📋 Copy Order</button>
+      </div>
     </div>
   </div>
 <script>
@@ -192,8 +280,8 @@ function render() {
       ? '<span class="price na">Negotiable</span>'
       : '<span class="price"><span class="cur">¥</span>' + price.toFixed(2) + '</span>';
     return '' +
-      '<div class="card" onclick="openLb(' + p.id + ')">' +
-        '<div class="thumb">' +
+      '<div class="card">' +
+        '<div class="thumb" onclick="openLb(' + p.id + ')">' +
           '<span class="badge">' + p.name + '</span>' +
           (has2 ? '<span class="multi-badge">2 pics</span>' : '') +
           '<img class="first" src="' + first + '" alt="' + p.name + '">' +
@@ -203,6 +291,7 @@ function render() {
           '<span class="name">' + p.name + '</span>' +
           priceHtml +
         '</div>' +
+        '<button class="add-btn' + (cart[p.id] ? ' in' : '') + '" onclick="addToCart(' + p.id + ');this.classList.add(\'in\');">+ Add to cart</button>' +
       '</div>';
   }).join('');
   renderPager(totalPages);
@@ -263,6 +352,115 @@ document.addEventListener('keydown', function(e) {
 document.getElementById('searchInput').addEventListener('input', function(e) { state.keyword = e.target.value; state.page = 1; render(); });
 document.getElementById('priceFilter').addEventListener('change', function(e) { state.price = e.target.value; state.page = 1; render(); });
 document.getElementById('pageSize').addEventListener('change', function(e) { state.pageSize = Number(e.target.value); state.page = 1; render(); });
+
+// ===== 购物车 =====
+let cart = {};
+try { cart = JSON.parse(localStorage.getItem('cart') || '{}'); } catch(e) { cart = {}; }
+function saveCart() { localStorage.setItem('cart', JSON.stringify(cart)); updateCartUI(); }
+function cartCount() { return Object.keys(cart).reduce(function(a,k){ return a + (cart[k] || 0); }, 0); }
+function cartTotal() {
+  return Object.keys(cart).reduce(function(sum,k){
+    var p = PRODUCTS.find(function(x){ return String(x.id) === k; });
+    var n = fmtPrice(p ? p.price : null);
+    return n === null ? sum : sum + n * cart[k];
+  }, 0);
+}
+function addToCart(id) { var k = String(id); cart[k] = (cart[k] || 0) + 1; saveCart(); }
+function changeQty(id, d) { var k = String(id); cart[k] = (cart[k] || 0) + d; if (cart[k] <= 0) delete cart[k]; saveCart(); renderCart(); }
+function clearCart() { cart = {}; saveCart(); renderCart(); }
+function updateCartUI() {
+  var c = cartCount();
+  var cnt = document.getElementById('cartCnt');
+  cnt.style.display = c ? 'flex' : 'none';
+  cnt.textContent = c;
+  document.getElementById('cartTotal').textContent = '¥' + cartTotal().toFixed(2);
+}
+function renderCart() {
+  updateCartUI();
+  var body = document.getElementById('cartBody');
+  var keys = Object.keys(cart);
+  if (!keys.length) { body.innerHTML = '<div class="cart-empty">Your cart is empty</div>'; return; }
+  body.innerHTML = keys.map(function(k){
+    var p = PRODUCTS.find(function(x){ return String(x.id) === k; });
+    if (!p) return '';
+    var q = cart[k];
+    var price = fmtPrice(p.price);
+    var sub = price === null ? null : price * q;
+    var img = (p.images && p.images[0]) || '';
+    return '<div class="cart-item">' +
+      '<img src="' + img + '" alt="">' +
+      '<div class="ci-mid">' +
+        '<div class="ci-name">' + p.name + '</div>' +
+        '<div class="ci-price">' + priceText(p.price) + '</div>' +
+        '<div class="qty"><button onclick="changeQty(\'' + k + '\',-1)">-</button><span>' + q + '</span><button onclick="changeQty(\'' + k + '\',1)">+</button></div>' +
+      '</div>' +
+      '<div class="ci-sub">' + (sub === null ? 'Negotiable' : '¥' + sub.toFixed(2)) + '</div>' +
+      '<button class="ci-del" onclick="changeQty(\'' + k + '\',-' + q + ')">✕</button>' +
+    '</div>';
+  }).join('');
+}
+function toggleCart() { document.getElementById('cartPanel').classList.toggle('open'); renderCart(); }
+function openInvoice() {
+  if (!cartCount()) { alert('Your cart is empty'); return; }
+  var d = new Date();
+  document.getElementById('ivDate').textContent = 'Date: ' + d.toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('ivBody').innerHTML = Object.keys(cart).map(function(k){
+    var p = PRODUCTS.find(function(x){ return String(x.id) === k; });
+    if (!p) return '';
+    var q = cart[k];
+    var price = fmtPrice(p.price);
+    var sub = price === null ? null : price * q;
+    return '<tr><td>' + p.name + '</td><td>' + priceText(p.price) + '</td><td class="num">' + q + '</td><td class="num">' + (sub === null ? 'Negotiable' : '¥' + sub.toFixed(2)) + '</td></tr>';
+  }).join('');
+  document.getElementById('ivTotal').textContent = '¥' + cartTotal().toFixed(2);
+  document.getElementById('invoiceModal').classList.add('open');
+  document.getElementById('cartPanel').classList.remove('open');
+}
+function closeInvoice() { document.getElementById('invoiceModal').classList.remove('open'); }
+function invoiceText() {
+  var lines = [];
+  lines.push('Crystal Factory Price List - Invoice');
+  lines.push(document.getElementById('ivDate').textContent);
+  var name = document.getElementById('ivName').value.trim();
+  var phone = document.getElementById('ivPhone').value.trim();
+  var wechat = document.getElementById('ivWechat').value.trim();
+  if (name) lines.push('Name: ' + name);
+  if (phone) lines.push('Phone: ' + phone);
+  if (wechat) lines.push('WeChat: ' + wechat);
+  lines.push('--------------------------------');
+  Object.keys(cart).forEach(function(k){
+    var p = PRODUCTS.find(function(x){ return String(x.id) === k; });
+    if (!p) return;
+    var q = cart[k];
+    var price = fmtPrice(p.price);
+    var sub = price === null ? null : price * q;
+    lines.push(p.name + '  x' + q + '  = ' + (sub === null ? 'Negotiable' : '¥' + sub.toFixed(2)));
+  });
+  lines.push('--------------------------------');
+  lines.push('TOTAL: ¥' + cartTotal().toFixed(2));
+  return lines.join('\n');
+}
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea'); ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand('copy'); alert('Order copied! Paste it to send via WeChat / Email.'); }
+  catch(e) { prompt('Copy manually:', text); }
+  document.body.removeChild(ta);
+}
+function copyInvoice() {
+  var text = invoiceText();
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(function(){ alert('Order copied! Paste it to send via WeChat / Email.'); }).catch(function(){ fallbackCopy(text); });
+  } else { fallbackCopy(text); }
+}
+function printInvoice() {
+  document.body.classList.add('printing-invoice');
+  window.print();
+  setTimeout(function(){ document.body.classList.remove('printing-invoice'); }, 500);
+}
+document.getElementById('invoiceModal').addEventListener('click', function(e){ if (e.target === this) closeInvoice(); });
+updateCartUI();
+
 render();
 </script>
 </body>
