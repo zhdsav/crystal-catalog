@@ -104,6 +104,8 @@
   .iv-total .sum { color:#c0392b; font-size:24px; font-weight:700; }
   .iv-actions { display:flex; gap:10px; }
   .iv-actions .btn { flex:1; justify-content:center; padding:12px; }
+  .submit-btn { width:100%; justify-content:center; padding:14px; font-size:16px; margin-top:10px; background:#c0392b; border-color:#c0392b; }
+  .submit-btn:hover { background:#e74c3c; border-color:#e74c3c; }
   .lightbox { position:fixed; inset:0; z-index:100; background:rgba(0,0,0,.88); display:none; align-items:center; justify-content:center; }
   .lightbox.open { display:flex; }
   .lightbox .lb-inner { position:relative; max-width:90vw; max-height:90vh; text-align:center; }
@@ -228,6 +230,7 @@
         <button class="btn" onclick="printInvoice()">🖨 Print / PDF</button>
         <button class="btn" onclick="copyInvoice()">📋 Copy Order</button>
       </div>
+      <button class="btn submit-btn" id="submitBtn" onclick="submitOrder()">📤 Submit Order</button>
     </div>
   </div>
 <script>
@@ -457,6 +460,39 @@ function printInvoice() {
   document.body.classList.add('printing-invoice');
   window.print();
   setTimeout(function(){ document.body.classList.remove('printing-invoice'); }, 500);
+}
+function submitOrder() {
+  var name = document.getElementById('ivName').value.trim();
+  var phone = document.getElementById('ivPhone').value.trim();
+  var wechat = document.getElementById('ivWechat').value.trim();
+  if (!name && !phone) { alert('Please fill in your name or phone so we can contact you.'); return; }
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.textContent = 'Sending...';
+  var data = {
+    name: name,
+    phone: phone,
+    wechat: wechat,
+    total: '¥' + cartTotal().toFixed(2),
+    order: invoiceText(),
+    _subject: 'New Order - ' + (name || 'Customer')
+  };
+  fetch('https://formspree.io/f/maeyerdz', {
+    method: 'POST',
+    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).then(function(res) {
+    if (res.ok) {
+      alert('Order submitted successfully! We will contact you soon.');
+      closeInvoice();
+      clearCart();
+    } else {
+      alert('Submit failed. Please use "Copy Order" and send it to us manually.');
+    }
+    btn.disabled = false; btn.textContent = '📤 Submit Order';
+  }).catch(function() {
+    alert('Network error. Please use "Copy Order" and send it to us manually.');
+    btn.disabled = false; btn.textContent = '📤 Submit Order';
+  });
 }
 document.getElementById('invoiceModal').addEventListener('click', function(e){ if (e.target === this) closeInvoice(); });
 updateCartUI();
