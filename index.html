@@ -76,7 +76,7 @@
   .cart-item .ci-price { font-size:12px; color:var(--muted); margin:3px 0; }
   .qty { display:inline-flex; align-items:center; border:1px solid #ddd; border-radius:6px; overflow:hidden; }
   .qty button { width:26px; height:26px; border:none; background:#f5f5f5; cursor:pointer; font-size:15px; line-height:1; }
-  .qty span { width:30px; text-align:center; font-size:13px; }
+  .qty input { width:64px; text-align:center; font-size:13px; border:none; outline:none; background:#fff; }
   .cart-item .ci-sub { font-size:14px; font-weight:700; color:#c0392b; margin-left:6px; }
   .ci-del { background:none; border:none; color:#ccc; cursor:pointer; font-size:18px; line-height:1; }
   .ci-del:hover { color:#c0392b; }
@@ -294,7 +294,7 @@ function render() {
           '<span class="name">' + p.name + '</span>' +
           priceHtml +
         '</div>' +
-        '<button class="add-btn' + (cart[p.id] ? ' in' : '') + '" onclick="addToCart(' + p.id + ');this.classList.add(\'in\');">+ Add to cart</button>' +
+        '<button class="add-btn' + (cart[p.id] ? ' in' : '') + '" onclick="addToCart(' + p.id + ');this.classList.add(\'in\');">+ Add 1000</button>' +
       '</div>';
   }).join('');
   renderPager(totalPages);
@@ -368,8 +368,9 @@ function cartTotal() {
     return n === null ? sum : sum + n * cart[k];
   }, 0);
 }
-function addToCart(id) { var k = String(id); cart[k] = (cart[k] || 0) + 1; saveCart(); }
+function addToCart(id) { var k = String(id); cart[k] = (cart[k] || 0) + 1000; saveCart(); }
 function changeQty(id, d) { var k = String(id); cart[k] = (cart[k] || 0) + d; if (cart[k] <= 0) delete cart[k]; saveCart(); renderCart(); }
+function setQty(id, v) { var k = String(id); var n = parseInt(v, 10); if (isNaN(n) || n < 1) { renderCart(); return; } cart[k] = n; saveCart(); renderCart(); }
 function clearCart() { cart = {}; saveCart(); renderCart(); }
 function updateCartUI() {
   var c = cartCount();
@@ -395,7 +396,7 @@ function renderCart() {
       '<div class="ci-mid">' +
         '<div class="ci-name">' + p.name + '</div>' +
         '<div class="ci-price">' + priceText(p.price) + '</div>' +
-        '<div class="qty"><button onclick="changeQty(\'' + k + '\',-1)">-</button><span>' + q + '</span><button onclick="changeQty(\'' + k + '\',1)">+</button></div>' +
+        '<div class="qty"><button onclick="changeQty(\'' + k + '\',-1000)">-</button><input type="number" min="1" value="' + q + '" onchange="setQty(\'' + k + '\',this.value)"><button onclick="changeQty(\'' + k + '\',1000)">+</button></div>' +
       '</div>' +
       '<div class="ci-sub">' + (sub === null ? 'Negotiable' : '¥' + sub.toFixed(2)) + '</div>' +
       '<button class="ci-del" onclick="changeQty(\'' + k + '\',-' + q + ')">✕</button>' +
