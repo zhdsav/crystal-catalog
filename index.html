@@ -41,8 +41,8 @@
   .thumb { position:relative; aspect-ratio:1/1; overflow:hidden; background:#eee; }
   .thumb img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:opacity .25s; }
   .thumb img.second { opacity:0; }
-  .card:hover .thumb img.second { opacity:1; }
-  .card:hover .thumb img.first { opacity:0; }
+  .thumb.has2:hover img.second { opacity:1; }
+  .thumb.has2:hover img.first { opacity:0; }
   .badge { position:absolute; top:8px; left:8px; z-index:2; background:rgba(0,0,0,.55); color:#fff; font-size:11px; padding:2px 8px; border-radius:20px; }
   .multi-badge { position:absolute; top:8px; right:8px; z-index:2; background:var(--gold); color:#fff; font-size:11px; padding:2px 8px; border-radius:20px; }
   .card .info { padding:12px 14px; display:flex; align-items:baseline; justify-content:space-between; }
@@ -283,7 +283,7 @@ function render() {
       : '<span class="price"><span class="cur">¥</span>' + price.toFixed(2) + '</span>';
     return '' +
       '<div class="card">' +
-        '<div class="thumb" onclick="openLb(' + p.id + ')">' +
+        '<div class="thumb' + (has2 ? ' has2' : '') + '" onclick="openLb(' + p.id + ')">' +
           '<span class="badge">' + p.name + '</span>' +
           (has2 ? '<span class="multi-badge">2 pics</span>' : '') +
           '<img class="first" loading="lazy" src="' + first + '" alt="' + p.name + '">' +
